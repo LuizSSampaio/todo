@@ -2,9 +2,12 @@ use args::{ActionType, TodoArgs};
 use clap::Parser;
 
 mod args;
+mod db;
 
 fn main() {
     let args = TodoArgs::parse();
+
+    let db_connection = db::connect();
 
     match args.action_type {
         ActionType::New(new_args) => {

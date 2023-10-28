@@ -1,46 +1,43 @@
-use rusqlite::{Connection, Result, NO_PARAMS};
-use std::path::Path;
+use rusqlite::{Connection, Result};
 
-const DB_PATH: String = "todo.db";
-const DB_TABLE_NAME: String = "todo";
+const DB_PATH: &str = "todo.db";
+const DB_TABLE_NAME: &str = "todo";
 
 #[derive(Debug)]
-struct To_Do {
+struct ToDo {
     name: String,
     is_done: bool,
 }
 
-fn connect() -> rusqlite::Connection {
-    let connection = Connection::open(DB_PATH)?;
+pub fn connect() -> rusqlite::Connection {
+    let connection = Connection::open(DB_PATH).unwrap();
 
-    let table_exists: bool = connection.query_row(
-        &format!(
-            "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='{}'",
-            DB_TABLE_NAME
-        ),
-        NO_PARAMS,
-        |row| row.get(0),
-    )?;
+    let table_exists: bool = connection
+        .query_row(
+            "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='(table_name)'",
+            &[DB_TABLE_NAME],
+            |row| row.get(0),
+        )
+        .unwrap();
 
     if !table_exists {
-        connection.execute(
-            &format!(
-                "CREATE TABLE {} (id INTEGER PRIMARY KEY, name TEXT, is_done BOOLEAN)",
-                DB_TABLE_NAME
-            ),
-            NO_PARAMS,
-        )?;
+        connection
+            .execute(
+                "CREATE TABLE (table_name) (id INTEGER PRIMARY KEY, name TEXT, is_done BOOLEAN)",
+                &[DB_TABLE_NAME],
+            )
+            .unwrap();
     }
 
     connection
 }
 
-fn create_new_list() {}
+pub fn create_new_list() {}
 
-fn add_list_item() {}
+pub fn add_list_item() {}
 
-fn remove_list_item() {}
+pub fn remove_list_item() {}
 
-fn done_list_item() {}
+pub fn done_list_item() {}
 
-fn undone_list_item() {}
+pub fn undone_list_item() {}

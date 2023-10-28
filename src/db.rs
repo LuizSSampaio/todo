@@ -32,7 +32,15 @@ pub fn connect() -> rusqlite::Connection {
     connection
 }
 
-pub fn create_new_list() {}
+pub fn create_new_list(db: rusqlite::Connection) {
+    db.execute("DROP TABLE IF EXISTS (table_name)", &[DB_TABLE_NAME])
+        .unwrap();
+    db.execute(
+        "CREATE TABLE (table_name) (id INTEGER PRIMARY KEY, name TEXT, is_done BOOLEAN)",
+        &[DB_TABLE_NAME],
+    )
+    .unwrap();
+}
 
 pub fn add_list_item() {}
 

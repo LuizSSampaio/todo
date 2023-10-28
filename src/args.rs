@@ -26,10 +26,7 @@ pub enum ActionType {
 }
 
 #[derive(Debug, Args)]
-pub struct NewCommand {
-    /// The name of the list
-    pub name: String,
-}
+pub struct NewCommand {}
 
 #[derive(Debug, Args)]
 pub struct AddCommand {

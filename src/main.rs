@@ -1,21 +1,30 @@
 use args::{ActionType, TodoArgs};
 use clap::Parser;
+use rusqlite::{Connection, Result};
 
 mod args;
-mod db;
 
 fn main() {
     let args = TodoArgs::parse();
 
-    let db_connection = db::connect();
+    let conn = Connection::open("todo.db").unwrap();
+    conn.execute(
+        "create table if not exists todo (
+            id integer primary key, 
+            title text not null, 
+            is_done boolean not null
+        )",
+        [],
+    )
+    .unwrap();
 
     match args.action_type {
-        ActionType::New(_new_args) => {
-            db::create_new_list(db_connection);
-        }
-
         ActionType::Add(add_args) => {
-            // TODO: Implement the function
+            conn.execute(
+                "INSERT INTO todo (title, is_done) values (?1, ?2)",
+                [&add_args.text, &false.to_string()],
+            )
+            .unwrap();
         }
 
         ActionType::Done(done_args) => {

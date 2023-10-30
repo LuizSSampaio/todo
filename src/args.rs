@@ -9,9 +9,6 @@ pub struct TodoArgs {
 
 #[derive(Debug, Subcommand)]
 pub enum ActionType {
-    /// Create a new To-do list
-    New(NewCommand),
-
     /// Add an item to the list
     Add(AddCommand),
 
@@ -24,9 +21,6 @@ pub enum ActionType {
     /// Mark an item as to be done
     UnDone(UnDoneCommand),
 }
-
-#[derive(Debug, Args)]
-pub struct NewCommand {}
 
 #[derive(Debug, Args)]
 pub struct AddCommand {
